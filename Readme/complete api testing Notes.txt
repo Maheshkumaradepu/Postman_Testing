@@ -1,0 +1,228 @@
+Tests in Postman:
+------------------
+
+
+Systax:
+--------
+1.pm.test("test name",function()
+  {
+    //Assertion
+   }
+ );
+  
+
+2.pm.test("Test name",()=>
+{
+//Assertion
+}
+);
+
+Testing Status Codes:
+---------------------
+
+1.One Status
+pm.test("Status code validation",()=>
+   {
+  pm.response.to.have.status(200);
+  }
+  );
+2.Two or More Status
+pm.test("MultiStatus code validation",()=>
+   {
+ pm.expect(pm.response.code).to.be.oneof([200,201]);
+  }
+  );
+3.Status code Test validation
+pm.test("Status code validation",()=>
+   {
+  pm.response.to.have.status("Accepted");
+  }
+  );
+
+Testing Header:
+---------------
+1.Content Type is in header validation
+pm.test("Content Type validation in Header",()=>
+{
+pm.response.to.have.header("content Type")
+}
+
+);
+2.Text of Content Type Validation
+pm.test("Content Text Validation",()=>
+{
+ pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');
+}
+);
+
+Testing Cookies:
+-------------------
+1.Test if a cookie is present in the response:
+pm.test("cookie 'language' is present",()=>
+{
+pm.expect(pm.cookies.has('language')).to.be.true;
+});
+
+2.Test for a particular cookie Value:
+pm.test("cookie language has value 1",()=>
+{
+pm.expect(pm.cookies.get('language')).to.eql('en-gb'));
+}
+);
+
+Testing Response Time:
+-----------------------
+
+pm.test("Reponse time in range validation",()=>{
+pm.expect(pm.response.responseTime).to.be.below(200);
+});
+
+
+Asserting a Value Type in Body:
+------------------------------
+
+{
+"id":1,
+"name":"kumar",
+"village":"sircilla",
+"course":[
+"C#",
+"python"
+]
+}
+
+const jsonData = pm.response.json();
+
+pm.test("Test data type of the response", () => {
+    pm.expect(jsonData).to.be.an("array"); // Adjusted to expect an array
+
+    // If each element in the array is expected to be an object
+    jsonData.forEach(item => {
+        const idAsNumber = parseInt(item.id);
+        pm.expect(item.name).to.be.a("string");
+        pm.expect(idAsNumber).to.be.a("number");
+        pm.expect(item.cources).to.be.an("array");
+    });
+});
+
+Asserting Array properties:
+--------------------------
+
+pm.test("Test Array properties",()=>
+{
+pm.expect(jsonData.cources).to.include('python')
+pm.expect(jsonData.cousrces).to.have.members(['python','c#'])}
+);
+
+Validating json fields in the Response:
+-----------------------------------------
+pm.test("values validation",()=>{
+pm.expect(jsonData.id).to.eql(1);
+pm.expect(jsonData.name).to.eql("mahesh");
+pm.expect(jsonData.cources[0]).to.eql("C#");
+pm.expect(jsonData.cources[1]).to.eql("python");
+});
+
+
+JSON Schema Validation:
+-----------------------
+var schema={
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "cources": {
+      "type": "array",
+      "items": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "string"
+        }
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "location",
+    "phone",
+    "cources"
+  ]
+}
+
+pm.test("Schema validation",()=>
+{
+pm.expect(tv4.validate(jsonData,schema)).to.be.true;
+});
+
+Scripts:
+-------
+1.Prerequest scripts-will execute before request.
+2.Test Scripts-will execute after request.
+
+
+prerequest scripts at collection level
+prerequest scripts at folder level
+prerequest scripts at request level
+REQUEST->RESPONSE
+Test scripts at collection level
+Test scripts at folder level
+Test scripts at request level
+
+Variables:
+----------
+1.Global level->Can be createed in both UI and prerequest-script
+   syntax:
+    ------
+     pm.globals.set("url_global","https://google.com");
+2.Collection level->Can be createed in both UI and prerequest-script
+   syntax:
+    ------
+     pm.collectionVariables.set("url_collector","https://google.com");
+3.Environment variable->Can be createed in both UI and prerequest-script
+ syntax:
+    ------
+     pm.environment.set("url_env","https://google.com");
+4.local level--> this has to be created in pre-request script
+   syntax:
+    ------
+     pm.variables.set("url_local","https://google.com");
+5.data level->this will be created in external files and used.
+
+
+After using the Variables if we want to delete them:
+----------------------------------------------------
+
+write the below code in Tests Script
+1.pm.globals.unset("url_global");
+2.pm.collectionVariables.unset("url_collector");
+3.pm.environment.unset("url_env");
+
+To print the Values of the variables:
+-------------------------------------
+Write below code in Test Script
+1.console.log(pm.globals.get("url_global"));
+2.console.log(pm.environment.get("url_env"));
+1.console.log(pm.collectionVariables.get("url_collect"));
+2.console.log(pm.variables.get("url_local"));
+
+Api Chaining:
+-----------
+Dependency b/w api's
+var jsonData=JSON.parse(responseBody);
+pm.environment.set("id",jsonData.id);
+
+Token:4ead25f6bc85080f11195881a32efc9e9cd1a5c57bff129703f71f85909a8210

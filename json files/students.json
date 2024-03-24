@@ -1,0 +1,54 @@
+{
+  "Students": [
+    {
+      "id": "1",
+      "name": "john",
+      "location": "Hyderabd",
+      "phone": "1233453434355",
+      "cources": [
+        "C#",
+        "python"
+      ]
+    },
+    {
+      "id": "2",
+      "name": "king",
+      "location": "vikarabadd",
+      "phone": "9994624753",
+      "cources": [
+        "C#",
+        "java"
+      ]
+    },
+    {
+      "id": "a980",
+      "name": "mayuri",
+      "location": "Hyderabad",
+      "phone": "9533864509",
+      "cources": [
+        "C#",
+        "SQL"
+      ]
+    },
+    {
+      "id": "c08f",
+      "name": "mayuri",
+      "location": "Hyderabad",
+      "phone": "9533864509",
+      "cources": [
+        "C#",
+        "SQL"
+      ]
+    },
+    {
+      "id": "aa0b",
+      "name": "mayuri",
+      "location": "Hyderabad",
+      "phone": "9533864509",
+      "cources": [
+        "C#",
+        "SQL"
+      ]
+    }
+  ]
+}
